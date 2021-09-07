@@ -7,7 +7,7 @@ namespace Game
 {
     class KeyGenerator
     {
-        public byte[] Key = new byte[128];
+        public byte[] Key = new byte[16];
         public byte[] GiveKey()
         {
             RandomNumberGenerator RandomKey  = RandomNumberGenerator.Create();

@@ -6,9 +6,8 @@ namespace Game
     {
         static void Main(string[] args)
         {
-            string[] ArgsTest = { "Rock", "Scissor", "Paper" };
-            var Rules = new Rules(ArgsTest);
-            var Help = new Help(Rules.ResultTable, ArgsTest);
+            var Rules = new Rules(args);
+            var Help = new Help(Rules.ResultTable, args);
             var KeyGen = new KeyGenerator();
             var StepGen = new StepGenerator();
             var Hmac = new HMAC();
@@ -16,16 +15,16 @@ namespace Game
             string UserMove;
             int UserChoise;
 
-            if (ArgsTest.Length >= 3)
+            if (args.Length >= 3 && args.Length%2!=0)
             {
                 while (true)
                 {
-                    Hmac.GiveHmac(KeyGen.GiveKey(), StepGen.GivePcStep(ArgsTest.Length));
+                    Hmac.GiveHmac(KeyGen.GiveKey(), StepGen.GivePcStep(args.Length));
                   
                     Console.WriteLine("Available moves:");
-                    for(int i=0; i<ArgsTest.Length; i++)
+                    for(int i=0; i< args.Length; i++)
                     {
-                        Console.WriteLine($" {i+1} - {ArgsTest[i]}");
+                        Console.WriteLine($" {i+1} - {args[i]}");
                     }
                     Console.WriteLine(" 0 - exit");
                     Console.WriteLine(" ? - Help");
@@ -38,10 +37,10 @@ namespace Game
                     }              
                     else if(int.TryParse(UserMove, out UserChoise)==true)
                     {
-                        if (UserChoise > 0 && UserChoise < ArgsTest.Length+1)
+                        if (UserChoise > 0 && UserChoise < args.Length+1)
                         {
-                            Console.WriteLine($"Your move: {ArgsTest[UserChoise-1]}");
-                            Console.WriteLine($"Computer move: {ArgsTest[StepGen.StepResult]}");
+                            Console.WriteLine($"Your move: {args[UserChoise-1]}");
+                            Console.WriteLine($"Computer move: {args[StepGen.StepResult]}");
                             Console.WriteLine($"{Rules.GiveWinner(UserChoise - 1, StepGen.StepResult)}");
                             Console.WriteLine($"HMAC key: {BitConverter.ToString(KeyGen.Key, 0).Replace("-", string.Empty)}");
                         }
@@ -58,7 +57,6 @@ namespace Game
                     {
                         ShowError();
                     }
-
                     Console.WriteLine("[Press any button]");
                     Console.ReadKey();
                     Console.Clear();
@@ -67,11 +65,9 @@ namespace Game
             else
             {
                 Console.WriteLine("----------------------------");
-                Console.WriteLine("!! Wrong count of moves, pls typing in args equal 3 words or more !!");
+                Console.WriteLine("!! Wrong count of moves, pls typing in args equal 3 words or more, but an odd number of words !!");
                 Console.WriteLine("----------------------------");
             }
-
-
             Console.Read();
         }
         static void  ShowError()
