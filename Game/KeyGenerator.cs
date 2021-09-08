@@ -7,11 +7,13 @@ namespace Game
 {
     class KeyGenerator
     {
-        public byte[] Key = new byte[16];
-        public byte[] GiveKey()
+        public string Key { get; set; }
+        public string GiveKey()
         {
+            byte[] KeyByte = new byte[16];
             RandomNumberGenerator RandomKey  = RandomNumberGenerator.Create();
-            RandomKey.GetBytes(Key);
+            RandomKey.GetBytes(KeyByte);
+            Key = BitConverter.ToString(KeyByte, 0).Replace("-", string.Empty);
             return Key;    
         }
     }

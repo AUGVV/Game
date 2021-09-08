@@ -8,16 +8,13 @@ namespace Game
     class StepGenerator
     {
         public int StepResult { get; set; } = 0;
-
-        public byte[] GivePcStep(int StepsCount)
+        public int GivePcStep(int StepsCount)
         {
             byte[] PcStep = new byte[4];
-            RandomNumberGenerator RandomKey = RandomNumberGenerator.Create();
-            RandomKey.GetBytes(PcStep);
+            RandomNumberGenerator RandomStep = RandomNumberGenerator.Create();
+            RandomStep.GetBytes(PcStep);
             StepResult = (int)(BitConverter.ToUInt32(PcStep, 0)%StepsCount);
-            return PcStep;
+            return StepResult;
         }
-
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Game
 {
@@ -17,10 +18,14 @@ namespace Game
 
             if (args.Length >= 3 && args.Length%2!=0)
             {
+                if (args.Distinct().Count() != args.Count())
+                {
+                    Console.WriteLine("Duplicate values! Check the names of the moves");
+                    Close();
+                }
                 while (true)
                 {
-                    Hmac.GiveHmac(KeyGen.GiveKey(), StepGen.GivePcStep(args.Length));
-                  
+                    Console.WriteLine(Hmac.GiveHmac(KeyGen.GiveKey(), args[StepGen.GivePcStep(args.Length)]));              
                     Console.WriteLine("Available moves:");
                     for(int i=0; i< args.Length; i++)
                     {
@@ -42,11 +47,11 @@ namespace Game
                             Console.WriteLine($"Your move: {args[UserChoise-1]}");
                             Console.WriteLine($"Computer move: {args[StepGen.StepResult]}");
                             Console.WriteLine($"{Rules.GiveWinner(UserChoise - 1, StepGen.StepResult)}");
-                            Console.WriteLine($"HMAC key: {BitConverter.ToString(KeyGen.Key, 0).Replace("-", string.Empty)}");
+                            Console.WriteLine($"HMAC key: {KeyGen.Key}");
                         }
                         else if (UserChoise == 0)
                         {
-                            Environment.Exit(0);
+                            Close();
                         }
                         else
                         {
@@ -67,8 +72,15 @@ namespace Game
                 Console.WriteLine("----------------------------");
                 Console.WriteLine("!! Wrong count of moves, pls typing in args equal 3 words or more, but an odd number of words !!");
                 Console.WriteLine("----------------------------");
+                Close();
             }
             Console.Read();
+        }
+
+        static void Close()
+        {
+            Console.Read();
+            Environment.Exit(0);
         }
         static void  ShowError()
         {
